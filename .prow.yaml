@@ -1,0 +1,19 @@
+presubmits:
+  - name: pull-kubestellar-helm-lint
+    always_run: true
+    decorate: true
+    clone_uri: 'https://github.com/kubestellar/helm'
+    spec:
+      containers:
+        - image: quay.io/helmpack/chart-testing:v3.10.1
+          command:
+            - /bin/bash
+            - -c
+            - |
+              # Lint all charts
+              ct lint --all --config .github/ct.yaml || ct lint --all
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 1
+              ephemeral-storage: 2Gi
